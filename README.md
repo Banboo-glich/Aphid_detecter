@@ -1,5 +1,5 @@
-# Aphid_ditecter👏
-Artificial intelligence webapp to identify the larvae of the pea aphid
+# Aphid_detecter👏
+Classification of developmental stages in pea aphid using YOLOv8 
 
 
 
