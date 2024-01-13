@@ -52,7 +52,7 @@ def main():
 
     elif app_mode == "Object Detection":
         
-        st.header("Juvenile stage classification of pea aphid using YOLOv8",)
+        st.header("Classification of developmental stages in pea aphid using YOLOv8 ",)
         
         st.sidebar.markdown("----")
         confidence = st.sidebar.slider("Confidence", min_value=0.0, max_value=1.0, value=0.50)
