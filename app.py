@@ -61,7 +61,7 @@ def main():
         DEMO_IMAGE = "1-G1-1028-13.jpg"
         
         if img_file_buffer_detect is not None:
-            img = cv.imdecode(np.fromstring(img_file_buffer_detect.read(), np.uint8), 1)
+            img = cv.imdecode(np.frombuffer(img_file_buffer_detect.read(), np.uint8), 1)
             image = np.array(Image.open(img_file_buffer_detect))
         else:
             img = cv.imread(DEMO_IMAGE)
@@ -84,5 +84,4 @@ if __name__ == "__main__":
         main()
     except SystemExit:
         pass
-        
 
