@@ -60,7 +60,7 @@ def main():
         else:
             img = cv.imread(DEMO_IMAGE)
             image = np.array(Image.open(DEMO_IMAGE))
-        st.sidebar.text("Original Image")
+        st.sidebar.text("元の画像")
         st.sidebar.image(image)
         
         # predict
