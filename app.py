@@ -16,8 +16,8 @@ def train_models():
     
 def main():
     
-    st.sidebar.title("Settings")
-    st.sidebar.subheader("Parameters")
+    st.sidebar.title("設定")
+    st.sidebar.subheader("パラメーター")
     st.markdown(
     """
         <style>
@@ -33,9 +33,9 @@ def main():
     unsafe_allow_html=True,
     )
     
-    app_mode = st.sidebar.selectbox('Choose the App Mode', ['アプリについて', '画像解析'])
+    app_mode = st.sidebar.selectbox('アプリページ一覧', ['アプリについて', '画像解析'])
     
-    if app_mode == 'Introduction':
+    if app_mode == 'アプリについて':
 
         st.title('深層学習(AI)によるアブラムシの画像解析 ')
         st.header("この子はいくつ？")
@@ -44,9 +44,9 @@ def main():
 
 
 
-    elif app_mode == "Object Detection":
+    elif app_mode == "画像解析":
         
-        st.header("Classification of developmental stages in pea aphid using YOLOv8 ",)
+        st.header("解析結果 ByYOLOv8 ",)
         
         st.sidebar.markdown("----")
         confidence = st.sidebar.slider("Confidence", min_value=0.0, max_value=1.0, value=0.50)
