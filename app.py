@@ -33,21 +33,15 @@ def main():
     unsafe_allow_html=True,
     )
     
-    app_mode = st.sidebar.selectbox('Choose the App Mode', ['Introduction', 'Object Detection'])
+    app_mode = st.sidebar.selectbox('Choose the App Mode', ['アプリについて', '画像解析'])
     
     if app_mode == 'Introduction':
 
-        st.title('Classification of developmental stages in pea aphid using YOLOv8 ')
-        st.header("How old is the pea aphid?")
+        st.title('深層学習(AI)によるアブラムシの画像解析 ')
+        st.header("この子はいくつ？")
         image = Image.open('1-G1-1028-13.jpg')
-        st.image(image, caption='-pea aphid-')
+        st.image(image, caption='-エンドウヒゲナガアブラムシ(PeaAphid)-')
 
-        st.header('Why this app ?')
-
-        st.text('1.Instantly determining the age of the pea aphid from images can speed up research into development.')
-        st.text('2.By applying this web application, accurate monitoring in the field becomes possible. This allows the field conditions to be accurately grasped, contributing to pest control.')
-
-        st.text('This web app assumes a binocular stereo microscope.')
 
 
     elif app_mode == "Object Detection":
