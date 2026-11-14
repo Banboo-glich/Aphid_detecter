@@ -99,10 +99,10 @@ def page_intro():
 
     st.header("動画で見る（解析の前と後）")
     st.write("動画を1コマずつAIが判定しています（2〜4秒の切り出し）。左が元の動画、右が判定結果です。")
-    st.subheader("脱皮のようす")
+    st.subheader("脱皮")
     st.write("古い皮（白い部分）から体を抜け出しているところです。")
     st.video(os.path.join(ASSETS, "molting.mp4"), loop=True, autoplay=True, muted=True)
-    st.subheader("出産のようす")
+    st.subheader("出産")
     st.write("アブラムシの成虫は、卵ではなく子どもを産みます（胎生）。生まれた子どもが1齢幼虫です。")
     st.video(os.path.join(ASSETS, "childbirth.mp4"), loop=True, autoplay=True, muted=True)
     st.caption("※元の動画には、撮影時に使った以前の判定プログラムの細い枠が入っています。太い枠と日本語の名前が今回のAIの判定です。")
