@@ -109,10 +109,9 @@ def page_intro():
     st.subheader("脱皮")
     st.write("古い皮（白い部分）から体を抜け出しているところです。")
     st.video(os.path.join(ASSETS, "molting.mp4"), loop=True, autoplay=True, muted=True)
-    st.subheader("出産")
+    st.subheader("大きいアブラムシをじっくり見て下さい。出産してます。")
     st.write("アブラムシの成虫は、卵ではなく子どもを産みます（胎生）。生まれた子どもが1齢幼虫です。")
     st.video(os.path.join(ASSETS, "childbirth.mp4"), loop=True, autoplay=True, muted=True)
-    st.caption("※この動画は、撮影時に以前の判定プログラムで解析したものです（枠と「Aphids counter」の表示）。")
 
 
 def page_accuracy():
