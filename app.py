@@ -88,6 +88,13 @@ def page_intro():
              "これまでは1匹ずつ飼って脱皮殻の数を数えるなど、人の目と手間に頼っていました。"
              "写真から一瞬で齢期が分かれば、発育の研究や、畑での害虫の調査を速く正確に進められます。")
 
+    st.header("研究のようす")
+    c1, c2 = st.columns(2)
+    c1.image(os.path.join(ASSETS, "lab_setup.jpg"), width="stretch",
+             caption="撮影のようす：実体顕微鏡にカメラをつなぎ、パソコンで撮影します")
+    c2.image(os.path.join(ASSETS, "lab_rearing.jpg"), width="stretch",
+             caption="飼育のようす：ソラマメの葉を入れた小さな容器で、1匹ずつ育てて齢期を記録します")
+
     st.header("写真で見る（解析の前と後）")
     st.write("1枚の写真に、成虫と幼虫が一緒に写っています。右がAIの判定結果です。")
     img = Image.open(os.path.join(ASSETS, "sample_multi.jpg"))
@@ -98,14 +105,14 @@ def page_intro():
     st.table(count_table(counts).set_index("齢期").T)
 
     st.header("動画で見る（解析の前と後）")
-    st.write("動画を1コマずつAIが判定しています（2〜4秒の切り出し）。左が元の動画、右が判定結果です。")
+    st.write("脱皮の動画は、AIが1コマずつ判定しています（左が元の動画、右が判定結果）。")
     st.subheader("脱皮")
     st.write("古い皮（白い部分）から体を抜け出しているところです。")
     st.video(os.path.join(ASSETS, "molting.mp4"), loop=True, autoplay=True, muted=True)
     st.subheader("出産")
     st.write("アブラムシの成虫は、卵ではなく子どもを産みます（胎生）。生まれた子どもが1齢幼虫です。")
     st.video(os.path.join(ASSETS, "childbirth.mp4"), loop=True, autoplay=True, muted=True)
-    st.caption("※元の動画には、撮影時に使った以前の判定プログラムの細い枠が入っています。太い枠と日本語の名前が今回のAIの判定です。")
+    st.caption("※この動画は、撮影時に以前の判定プログラムで解析したものです（枠と「Aphids counter」の表示）。")
 
 
 def page_accuracy():
