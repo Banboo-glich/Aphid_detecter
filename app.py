@@ -88,6 +88,13 @@ def page_intro():
              "これまでは1匹ずつ飼って脱皮殻の数を数えるなど、人の目と手間に頼っていました。"
              "写真から一瞬で齢期が分かれば、発育の研究や、畑での害虫の調査を速く正確に進められます。")
 
+    st.header("研究のようす")
+    c1, c2 = st.columns(2)
+    c1.image(os.path.join(ASSETS, "lab_setup.jpg"), width="stretch",
+             caption="撮影のようす：実体顕微鏡にカメラをつなぎ、パソコンで撮影します")
+    c2.image(os.path.join(ASSETS, "lab_rearing.jpg"), width="stretch",
+             caption="飼育のようす：ソラマメの葉を入れた小さな容器で、1匹ずつ育てて齢期を記録します")
+
     st.header("写真で見る（解析の前と後）")
     st.write("1枚の写真に、成虫と幼虫が一緒に写っています。右がAIの判定結果です。")
     img = Image.open(os.path.join(ASSETS, "sample_multi.jpg"))
