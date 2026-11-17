@@ -7,6 +7,8 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 from ultralytics import YOLO
 
+from gradcam import YOLOGradCAM, overlay
+
 st.set_page_config(page_title="AphidDetector", layout="wide")
 
 MODEL_PATH = "best.pt"
@@ -183,15 +185,77 @@ def page_detect():
         st.table(count_table(counts).set_index("齢期").T)
 
 
+@st.cache_resource
+def load_gradcam():
+    return YOLOGradCAM(load_model())
+
+
+def page_gradcam():
+    st.title("AIはどこを見ているか（Grad-CAM）")
+    st.write("Grad-CAM は、AIが判定するときに画像のどこを手がかりにしたかを色で表す方法です。"
+             "赤や黄色の場所ほど、その判定に強く効いています。")
+
+    st.sidebar.markdown("----")
+    conf = st.sidebar.slider("確信度のしきい値", 0.0, 1.0, 0.50, key="cam_conf")
+    alpha = st.sidebar.slider("ヒートマップの濃さ", 0.0, 1.0, 0.50)
+    file = st.sidebar.file_uploader("画像をアップロード", type=["jpg", "jpeg", "png"], key="cam_file")
+
+    img = Image.open(file) if file else Image.open(os.path.join(ASSETS, "gradcam_sample.jpg"))
+    if not file:
+        st.info("画像がないときはサンプル画像（3齢幼虫）で解析します。")
+    rgb = np.array(img.convert("RGB"))
+    bgr = np.ascontiguousarray(rgb[..., ::-1])  # 学習時と同じBGRで渡す
+
+    gc = load_gradcam()
+    with st.spinner("Grad-CAMを計算しています…"):
+        cam, dets = gc(bgr, conf=conf)
+    if not dets:
+        st.warning("アブラムシが見つかりませんでした。しきい値を下げるか、別の画像を試してください。")
+        return
+
+    labels = ["すべての検出"] + [f"{i + 1}: {JP_NAMES[k]}（確信度 {c:.2f}）" for i, (*_, c, k) in enumerate(dets)]
+    choice = st.selectbox("どの判定の根拠を見る？", range(len(labels)), format_func=lambda i: labels[i])
+    if choice:
+        with st.spinner("Grad-CAMを計算しています…"):
+            cam, _ = gc(bgr, conf=conf, targets=[choice - 1])
+
+    out = Image.fromarray(overlay(rgb, cam, alpha))
+    draw = ImageDraw.Draw(out)
+    font = load_font(max(20, out.width // 60))
+    line = max(3, out.width // 400)
+    for i, (x1, y1, x2, y2, c, k) in enumerate(dets):
+        if choice and i != choice - 1:
+            continue
+        draw.rectangle([x1, y1, x2, y2], outline=COLORS[k], width=line)
+        label = f"{JP_NAMES[k]} {c:.2f}" if font else f"{load_model().names[k]} {c:.2f}"
+        draw.text((x1 + 5, y1 + 5), label, fill="white", font=font)
+
+    c1, c2 = st.columns(2)
+    c1.image(img, caption="元の画像", width="stretch")
+    c2.image(out, caption="Grad-CAM（赤いほど判定に効いた場所）", width="stretch")
+
+    st.header("見かた")
+    st.markdown(
+        "- 体の上に色が集まっていれば、AIは虫そのものの形や模様を見て判定しています\n"
+        "- 背景に色が出ている場所は、AIが「周りとの違い」や大きさの手がかりとして使った可能性があります\n"
+        "- 「どの判定の根拠を見る？」で1匹を選ぶと、その個体の判定だけの根拠が見られます")
+    with st.expander("しくみ（くわしく）"):
+        st.write("YOLOv8 の検出ヘッドに入る3つの解像度の特徴マップそれぞれで、判定したクラスの確信度を"
+                 "逆伝播して勾配を求めます。勾配の平均をチャネルの重みとして特徴マップを足し合わせ（Grad-CAM）、"
+                 "3つを同じ大きさにそろえて平均しています。")
+
+
 def main():
     st.sidebar.title("Settings")
-    mode = st.sidebar.selectbox("ページを選ぶ", ["はじめに", "AIの精度", "判定してみる"])
+    mode = st.sidebar.selectbox("ページを選ぶ", ["はじめに", "AIの精度", "判定してみる", "AIはどこを見ているか"])
     if mode == "はじめに":
         page_intro()
     elif mode == "AIの精度":
         page_accuracy()
-    else:
+    elif mode == "判定してみる":
         page_detect()
+    else:
+        page_gradcam()
 
 
 if __name__ == "__main__":

@@ -31,3 +31,12 @@ https://github.com/sevdaimany/YOLOv8-Medical-Imaging
 
 
 
+
+## Grad-CAM: where does the AI look?
+The app has a page 「AIはどこを見ているか」 that shows a Grad-CAM heatmap of the image regions that drove each instar prediction.
+Grad-CAM is computed on the three feature maps that feed the YOLOv8 Detect head (layers 15/18/21), using the confidence of the predicted class for each detection kept after NMS.
+
+Command line:
+```bash
+python gradcam.py path/to/image.jpg --weights best.pt --conf 0.5 --out gradcam.jpg
+```
