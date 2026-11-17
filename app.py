@@ -95,14 +95,6 @@ def page_intro():
     c2.image(os.path.join(ASSETS, "lab_rearing.jpg"), width="stretch",
              caption="飼育のようす：ソラマメの葉を入れた小さな容器で、1匹ずつ育てて齢期を記録します")
 
-    st.header("写真で見る（解析の前と後）")
-    st.write("1枚の写真に、成虫と幼虫が一緒に写っています。右がAIの判定結果です。")
-    img = Image.open(os.path.join(ASSETS, "sample_multi.jpg"))
-    out, counts = detect(img, 0.5)
-    c1, c2 = st.columns(2)
-    c1.image(img, caption="解析前", width="stretch")
-    c2.image(out, caption="解析後（枠の数字はAIの確信度）", width="stretch")
-    st.table(count_table(counts).set_index("齢期").T)
 
     st.header("動画で見る（解析の前と後）")
     st.write("脱皮の動画は、AIが1コマずつ判定しています（左が元の動画、右が判定結果）。")
