@@ -160,7 +160,7 @@ def page_accuracy():
 
 def page_detect():
     st.title("判定してみる")
-    st.write("実体顕微鏡で撮った写真をアップロードすると、AIが齢期を判定して数えます。")
+    st.write("写真をアップロードすると、AIが齢期を判定して数えます。")
 
     st.sidebar.markdown("----")
     conf = st.sidebar.slider("確信度のしきい値", 0.0, 1.0, 0.50,
